@@ -1,2 +1,2 @@
-# GaryRemoteGit
+# GitGaryRemote
 For test
