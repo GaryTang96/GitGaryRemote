@@ -1,0 +1,167 @@
+#include <cjson/cJSON.h>
+
+int main() {
+    char session_id[10] = "960204";
+    
+    // 创建根对象
+    cJSON *root = cJSON_CreateObject();
+    
+    // 创建 descriptors 数组
+    cJSON *descriptors = cJSON_CreateArray();
+    
+    // ====== 创建 Speaker 设备 ======
+    cJSON *speaker = cJSON_CreateObject();
+    cJSON_AddStringToObject(speaker, "description", "Speaker");
+    cJSON_AddStringToObject(speaker, "name", "Speaker");
+    
+    // Speaker 的 methods
+    cJSON *speaker_methods = cJSON_CreateObject();
+    
+    // SetMute 方法
+    cJSON *setMute = cJSON_CreateObject();
+    cJSON_AddStringToObject(setMute, "description", "Set mute status");
+    cJSON *mute_params = cJSON_CreateObject();
+    cJSON *mute_param = cJSON_CreateObject();
+    cJSON_AddStringToObject(mute_param, "description", "Mute status");
+    cJSON_AddStringToObject(mute_param, "type", "boolean");
+    cJSON_AddItemToObject(mute_params, "mute", mute_param);
+    cJSON_AddItemToObject(setMute, "parameters", mute_params);
+    cJSON_AddItemToObject(speaker_methods, "SetMute", setMute);
+    
+    // SetVolume 方法
+    cJSON *setVolume = cJSON_CreateObject();
+    cJSON_AddStringToObject(setVolume, "description", "Set volume level");
+    cJSON *volume_params = cJSON_CreateObject();
+    cJSON *volume_param = cJSON_CreateObject();
+    cJSON_AddStringToObject(volume_param, "description", "Volume level[0-100]");
+    cJSON_AddStringToObject(volume_param, "type", "number");
+    cJSON_AddItemToObject(volume_params, "volume", volume_param);
+    cJSON_AddItemToObject(setVolume, "parameters", volume_params);
+    cJSON_AddItemToObject(speaker_methods, "SetVolume", setVolume);
+    
+    cJSON_AddItemToObject(speaker, "methods", speaker_methods);
+    
+    // Speaker 的 properties
+    cJSON *speaker_props = cJSON_CreateObject();
+    cJSON *mute_prop = cJSON_CreateObject();
+    cJSON_AddStringToObject(mute_prop, "description", "Mute status");
+    cJSON_AddStringToObject(mute_prop, "type", "boolean");
+    cJSON_AddItemToObject(speaker_props, "mute", mute_prop);
+    
+    cJSON *volume_prop = cJSON_CreateObject();
+    cJSON_AddStringToObject(volume_prop, "description", "Volume level[0-100]");
+    cJSON_AddStringToObject(volume_prop, "type", "number");
+    cJSON_AddItemToObject(speaker_props, "volume", volume_prop);
+    
+    cJSON_AddItemToObject(speaker, "properties", speaker_props);
+    cJSON_AddItemToArray(descriptors, speaker);
+    
+    // ====== 创建 Lighter 设备 ======
+    cJSON *lighter = cJSON_CreateObject();
+    cJSON_AddStringToObject(lighter, "description", "Lighter");
+    cJSON_AddStringToObject(lighter, "name", "Lighter");
+    
+    // Lighter 的 methods
+    cJSON *lighter_methods = cJSON_CreateObject();
+    
+    // SetLight 方法
+    cJSON *setLight = cJSON_CreateObject();
+    cJSON_AddStringToObject(setLight, "description", "Set light on off");
+    cJSON *light_params = cJSON_CreateObject();
+    cJSON *light_param = cJSON_CreateObject();
+    cJSON_AddStringToObject(light_param, "description", "Light status");
+    cJSON_AddStringToObject(light_param, "type", "boolean");
+    cJSON_AddItemToObject(light_params, "light", light_param);
+    cJSON_AddItemToObject(setLight, "parameters", light_params);
+    cJSON_AddItemToObject(lighter_methods, "SetLight", setLight);
+    
+    cJSON_AddItemToObject(lighter, "methods", lighter_methods);
+    
+    // Lighter 的 properties
+    cJSON *lighter_props = cJSON_CreateObject();
+    cJSON *light_prop = cJSON_CreateObject();
+    cJSON_AddStringToObject(light_prop, "description", "Light status");
+    cJSON_AddStringToObject(light_prop, "type", "boolean");
+    cJSON_AddItemToObject(lighter_props, "light", light_prop);
+    
+    cJSON_AddItemToObject(lighter, "properties", lighter_props);
+    cJSON_AddItemToArray(descriptors, lighter);
+    
+    // ====== 创建 LCD 设备 ======
+    cJSON *lcd = cJSON_CreateObject();
+    cJSON_AddStringToObject(lcd, "description", "LCD");
+    cJSON_AddStringToObject(lcd, "name", "LCD");
+    
+    // LCD 的 methods
+    cJSON *lcd_methods = cJSON_CreateObject();
+    
+    // SetBright 方法
+    cJSON *setBright = cJSON_CreateObject();
+    cJSON_AddStringToObject(setBright, "description", "Set bright level");
+    cJSON *bright_params = cJSON_CreateObject();
+    cJSON *bright_param = cJSON_CreateObject();
+    cJSON_AddStringToObject(bright_param, "description", "bright level[0-255]");
+    cJSON_AddStringToObject(bright_param, "type", "number");
+    cJSON_AddItemToObject(bright_params, "bright", bright_param);
+    cJSON_AddItemToObject(setBright, "parameters", bright_params);
+    cJSON_AddItemToObject(lcd_methods, "SetBright", setBright);
+    
+    cJSON_AddItemToObject(lcd, "methods", lcd_methods);
+    
+    // LCD 的 properties
+    cJSON *lcd_props = cJSON_CreateObject();
+    cJSON *bright_prop = cJSON_CreateObject();
+    cJSON_AddStringToObject(bright_prop, "description", "bright level[0-255]");
+    cJSON_AddStringToObject(bright_prop, "type", "number");
+    cJSON_AddItemToObject(lcd_props, "bright", bright_prop);
+    
+    cJSON_AddItemToObject(lcd, "properties", lcd_props);
+    cJSON_AddItemToArray(descriptors, lcd);
+    
+    // ====== 创建 Motor 设备 ======
+    cJSON *motor = cJSON_CreateObject();
+    cJSON_AddStringToObject(motor, "description", "Motor");
+    cJSON_AddStringToObject(motor, "name", "Motor");
+    
+    // Motor 的 methods
+    cJSON *motor_methods = cJSON_CreateObject();
+    
+    // SetSpeed 方法
+    cJSON *setSpeed = cJSON_CreateObject();
+    cJSON_AddStringToObject(setSpeed, "description", "Set the rotational speed");
+    cJSON *speed_params = cJSON_CreateObject();
+    cJSON *speed_param = cJSON_CreateObject();
+    cJSON_AddStringToObject(speed_param, "description", "speed level[-260-260]");
+    cJSON_AddStringToObject(speed_param, "type", "number");
+    cJSON_AddItemToObject(speed_params, "mSpeed", speed_param);
+    cJSON_AddItemToObject(setSpeed, "parameters", speed_params);
+    cJSON_AddItemToObject(motor_methods, "SetSpeed", setSpeed);
+    
+    cJSON_AddItemToObject(motor, "methods", motor_methods);
+    
+    // Motor 的 properties
+    cJSON *motor_props = cJSON_CreateObject();
+    cJSON *speed_prop = cJSON_CreateObject();
+    cJSON_AddStringToObject(speed_prop, "description", "bright level[-240-240]");
+    cJSON_AddStringToObject(speed_prop, "type", "number");
+    cJSON_AddItemToObject(motor_props, "mSpeed", speed_prop);
+    
+    cJSON_AddItemToObject(motor, "properties", motor_props);
+    cJSON_AddItemToArray(descriptors, motor);
+    
+    // ====== 添加到根对象 ======
+    cJSON_AddItemToObject(root, "descriptors", descriptors);
+    cJSON_AddStringToObject(root, "session_id", session_id);
+    cJSON_AddStringToObject(root, "type", "iot");
+    cJSON_AddBoolToObject(root, "update", cJSON_True);
+    
+    // 序列化并打印 JSON
+    char *json_str = cJSON_Print(root);
+    printf("Generated JSON:\n%s\n", json_str);
+    
+    // 清理内存
+    free(json_str);
+    cJSON_Delete(root);
+
+    return 0;
+}
